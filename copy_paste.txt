@@ -1,0 +1,79 @@
+json response containes the name and the picture of the channel:
+
+{
+  "kind": "youtube#channelListResponse",
+  "etag": "-q19oWv6Ms_htm_feTFTDnDjMIo",
+  "pageInfo": {
+    "totalResults": 1,
+    "resultsPerPage": 25
+  },
+  "items": [
+    {
+      "kind": "youtube#channel",
+      "etag": "nyLFA6MMnKu9f88ZLav0ys5YGZk",
+      "id": "UCJvgF5uUL22U7i9tNlPvduA",
+      "snippet": {
+        "title": "FOOT BALL",
+        "description": "",
+        "publishedAt": "2017-05-29T19:22:57Z",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/ytc/AKedOLQWFdbuQwf5EODGlzRcZ-VQK-swaJIOMr2xmRMD=s88-c-k-c0x00ffffff-no-rj",
+            "width": 88,
+            "height": 88
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/ytc/AKedOLQWFdbuQwf5EODGlzRcZ-VQK-swaJIOMr2xmRMD=s240-c-k-c0x00ffffff-no-rj",
+            "width": 240,
+            "height": 240
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/ytc/AKedOLQWFdbuQwf5EODGlzRcZ-VQK-swaJIOMr2xmRMD=s800-c-k-c0x00ffffff-no-rj",
+            "width": 800,
+            "height": 800
+          }
+        },
+        "localized": {
+          "title": "FOOT BALL",
+          "description": ""
+        }
+      }
+    }
+  ]
+}
+
+the code of the json above:
+
+# -*- coding: utf-8 -*-
+
+# Sample Python code for youtube.channels.list
+# See instructions for running these code samples locally:
+# https://developers.google.com/explorer-help/code-samples#python
+
+import os
+
+import googleapiclient.discovery
+
+def main():
+    # Disable OAuthlib's HTTPS verification when running locally.
+    # *DO NOT* leave this option enabled in production.
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
+    api_service_name = "youtube"
+    api_version = "v3"
+    DEVELOPER_KEY = "YOUR_API_KEY"
+
+    youtube = googleapiclient.discovery.build(
+        api_service_name, api_version, developerKey = DEVELOPER_KEY)
+
+    request = youtube.channels().list(
+        part="snippet",
+        id="UCJvgF5uUL22U7i9tNlPvduA",
+        maxResults=25
+    )
+    response = request.execute()
+
+    print(response)
+
+if __name__ == "__main__":
+    main()
