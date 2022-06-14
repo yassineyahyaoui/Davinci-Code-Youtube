@@ -1,4 +1,5 @@
 
+import json
 import csv
 import googleapiclient.discovery
 
@@ -10,27 +11,22 @@ def main():
 
     youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=DEVELOPER_KEY)
 
-    request = youtube.search().list(
+    request_videos = youtube.search().list(
         part="snippet,id",
         channelId="UCJvgF5uUL22U7i9tNlPvduA",
         order="date",
         maxResults=5
     )
-    response = request.execute()
+    response_videos = request_videos.execute()
 
-    print(response)
+    print(response_videos)
 
-    #f = open("channels.csv", "a", newline="")
-
-    #row = (response["items"][0]["id"], response["items"][0]["statistics"]["videoCount"])
-    #writer = csv.writer(f)
-    #writer.writerow(row)
-
-    #f.close()
-
-
-
-
+    for video in response_videos["items"]:
+        print(video)
+        file_videos = open("videos.csv", "a", newline="")
+        row = (json.dumps(video["snippet"]["channelId"])[1:len(json.dumps(video["snippet"]["channelId"]))-1], json.dumps(video["snippet"]["title"])[1:len(json.dumps(video["snippet"]["title"]))-1])
+        csv.writer(file_videos).writerow(row)
+        file_videos.close()
 
 if __name__ == "__main__":
     main()
