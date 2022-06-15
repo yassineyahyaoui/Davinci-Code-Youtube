@@ -3,6 +3,10 @@ import json
 import csv
 import googleapiclient.discovery
 
+def format_word(word_with_quotes):
+    new_word = json.dumps(word_with_quotes)[1:len(json.dumps(word_with_quotes))-1]
+    return new_word
+
 def main():
 
     api_service_name = "youtube"
@@ -23,9 +27,17 @@ def main():
 
     for video in response_videos["items"]:
         print(video)
+
         file_videos = open("videos.csv", "a", newline="")
-        row = (json.dumps(video["snippet"]["channelId"])[1:len(json.dumps(video["snippet"]["channelId"]))-1], json.dumps(video["snippet"]["title"])[1:len(json.dumps(video["snippet"]["title"]))-1])
+
+        channel_id = format_word(video["snippet"]["channelId"])
+        video_id = format_word(video["id"]["videoId"])
+        video_title = format_word(video["snippet"]["title"])
+
+        row = (channel_id, video_id, video_title)
+
         csv.writer(file_videos).writerow(row)
+
         file_videos.close()
 
 if __name__ == "__main__":
