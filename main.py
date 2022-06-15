@@ -1,11 +1,6 @@
-
 import json
 import csv
 import googleapiclient.discovery
-
-def format_word(word_with_quotes):
-    new_word = json.dumps(word_with_quotes)[1:len(json.dumps(word_with_quotes))-1]
-    return new_word
 
 def main():
 
@@ -30,9 +25,9 @@ def main():
 
         file_videos = open("videos.csv", "a", newline="")
 
-        channel_id = format_word(video["snippet"]["channelId"])
-        video_id = format_word(video["id"]["videoId"])
-        video_title = format_word(video["snippet"]["title"])
+        channel_id = video["snippet"]["channelId"]
+        video_id = video["id"]["videoId"]
+        video_title = video["snippet"]["title"].encode("utf-8")
 
         row = (channel_id, video_id, video_title)
 
