@@ -18,17 +18,34 @@ def main():
     )
     response_videos = request_videos.execute()
 
-    print(response_videos)
+
+
+    file_videos = open("videos.csv", "r", newline="")
+    content = file_videos.read()
+    if ("Channel title" or "Video id" or "Video title") not in content:
+        file_videos.close()
+
+        file_videos = open("videos.csv", "a", newline="")
+
+        channel_title_header = "Channel title"
+        video_id_header = "Video id"
+        video_title_header = "Video title"
+
+        row = (channel_title_header, video_id_header, video_title_header)
+
+        csv.writer(file_videos).writerow(row)
+
+        file_videos.close()
 
     for video in response_videos["items"]:
         if "videoId" in video["id"]:
             file_videos = open("videos.csv", "a", newline="")
 
-            channel_id = video["snippet"]["channelId"]
+            channel_title = video["snippet"]["channelTitle"]
             video_id = video["id"]["videoId"]
             video_title = video["snippet"]["title"].encode("utf-8")
 
-            row = (channel_id, video_id, video_title)
+            row = (channel_title, video_id, video_title)
 
             csv.writer(file_videos).writerow(row)
 

@@ -55,3 +55,24 @@ json response containes the name and the picture of the channel:
     }
   ]
 }
+
+////
+
+
+file_videos = open("videos.csv", "r", newline="")
+    content = file_videos.read()
+    print(len(content))
+    file_videos.close()
+
+
+    file_videos = open("videos.csv", "a", newline="")
+
+    channel_title_header = "Channel title"
+    video_id_header = "Video id"
+    video_title_header = "Video title"
+
+    row = (channel_title_header, video_id_header, video_title_header)
+
+    csv.writer(file_videos).writerow(row)
+
+    file_videos.close()
