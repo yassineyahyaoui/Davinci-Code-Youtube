@@ -4,6 +4,7 @@ from functions.get_subscriptions import get_subscriptions
 
 def main():
     get_subscriptions()
+    get_videos()
 
 
 if __name__ == "__main__":

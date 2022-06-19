@@ -1,4 +1,5 @@
 import os
+import csv
 import pickle
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
@@ -13,15 +14,37 @@ developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
 
 
 def get_subscriptions():
-    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-
     youtube = get_authenticated_service()
-    request = youtube.channels().list(
-        part="contentDetails",
+
+    request = youtube.subscriptions().list(
+        part="snippet,contentDetails",
         mine=True
     )
     response = request.execute()
-    print(response)
+
+    file_channels = open(os.path.join("data", "channels.csv"), "r", newline="")
+    content = file_channels.read()
+    file_channels.close()
+
+    if ("Channel name" or "Channel id") not in content:
+        file_channels = open(os.path.join("data", "channels.csv"), "w", newline="")
+        row = ("Channel name", "Channel id")
+        csv.writer(file_channels).writerow(row)
+        file_channels.close()
+
+    for channel in response["items"]:
+        file_channels = open(os.path.join("data", "channels.csv"), "r", newline="")
+        content = file_channels.read()
+
+        if channel["snippet"]["resourceId"]["channelId"] not in content:
+            file_channels = open(os.path.join("data", "channels.csv"), "a", newline="")
+
+            channel_name = channel["snippet"]["title"].encode("utf-8")
+            channel_id = channel["snippet"]["resourceId"]["channelId"]
+
+            row = (channel_name, channel_id)
+            csv.writer(file_channels).writerow(row)
+            file_channels.close()
 
 
 def get_authenticated_service():

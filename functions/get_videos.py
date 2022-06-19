@@ -10,39 +10,34 @@ developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
 
 
 def get_videos():
-    youtube = googleapiclient.discovery.build(
-        api_service_name, api_version, developerKey=developer_key)
+    youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=developer_key)
 
-    request_videos = youtube.search().list(
+    request = youtube.search().list(
         part="snippet,id",
         channelId="UCJvgF5uUL22U7i9tNlPvduA",
         order="date",
         maxResults=50
     )
-    response_videos = request_videos.execute()
+    response = request.execute()
 
     file_videos = open(os.path.join("data", "videos.csv"), "r", newline="")
     content = file_videos.read()
-    if ("Channel title" or "Video id" or "Video title") not in content:
-        file_videos.close()
+    file_videos.close()
 
+    if ("Channel title" or "Video id" or "Video title") not in content:
         file_videos = open(os.path.join("data", "videos.csv"), "w", newline="")
 
         row = ("Channel title", "Video id", "Video title")
-
         csv.writer(file_videos).writerow(row)
-
         file_videos.close()
 
-    for video in response_videos["items"]:
+    for video in response["items"]:
         if "videoId" in video["id"]:
             file_videos = open(os.path.join("data", "videos.csv"), "r", newline="")
-
             content = file_videos.read()
+            file_videos.close()
 
             if video["id"]["videoId"] not in content:
-                file_videos.close()
-
                 file_videos = open(os.path.join("data", "videos.csv"), "a", newline="")
 
                 channel_title = video["snippet"]["channelTitle"]
@@ -50,9 +45,5 @@ def get_videos():
                 video_title = video["snippet"]["title"].encode("utf-8")
 
                 row = (channel_title, video_id, video_title)
-
                 csv.writer(file_videos).writerow(row)
-
-                file_videos.close()
-            else:
                 file_videos.close()
