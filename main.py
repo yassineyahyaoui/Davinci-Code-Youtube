@@ -3,7 +3,7 @@ from functions.get_subscriptions import get_subscriptions
 
 
 def main():
-    get_subscriptions()
+    get_subscriptions("FOOT BALL")
     get_videos()
 
 

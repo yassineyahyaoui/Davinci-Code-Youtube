@@ -12,8 +12,8 @@ api_version = "v3"
 developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
 
 
-def get_subscriptions():
-    youtube = get_authenticated_service()
+def get_subscriptions(targeted_channel):
+    youtube = get_authenticated_service(targeted_channel)
 
     request = youtube.subscriptions().list(
         part="snippet,contentDetails",
@@ -21,22 +21,22 @@ def get_subscriptions():
     )
     response = request.execute()
 
-    file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "r", newline="")
+    file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "r", newline="")
     content = file_channels.read()
     file_channels.close()
 
     if ("Channel name" or "Channel id") not in content:
-        file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "w", newline="")
+        file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "w", newline="")
         row = ("Channel name", "Channel id")
         csv.writer(file_channels).writerow(row)
         file_channels.close()
 
     for channel in response["items"]:
-        file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "r", newline="")
+        file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "r", newline="")
         content = file_channels.read()
 
         if channel["snippet"]["resourceId"]["channelId"] not in content:
-            file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "a", newline="")
+            file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "a", newline="")
 
             channel_name = channel["snippet"]["title"].encode("utf-8")
             channel_id = channel["snippet"]["resourceId"]["channelId"]
@@ -46,8 +46,8 @@ def get_subscriptions():
             file_channels.close()
 
 
-def get_authenticated_service():
-    secret_file = open(os.path.join("data", "FOOT BALL", "client_secret.json"), "r", newline="")
+def get_authenticated_service(targeted_channel):
+    secret_file = open(os.path.join("data", targeted_channel, "client_secret.json"), "r", newline="")
     client_secrets_file = secret_file.read()
     secret_file.close()
     print(client_secrets_file)
