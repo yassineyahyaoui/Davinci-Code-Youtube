@@ -50,15 +50,14 @@ def get_authenticated_service(targeted_channel):
     secret_file = open(os.path.join("data", targeted_channel, "client_secret.json"), "r", newline="")
     client_secrets_file = secret_file.read()
     secret_file.close()
-    print(client_secrets_file)
 
-    if os.path.exists("CREDENTIALS_PICKLE_FILE"):
-        with open("CREDENTIALS_PICKLE_FILE", 'rb') as f:
+    if os.path.exists(os.path.join("data", "FOOT BALL", "CREDENTIALS_PICKLE_FILE")):
+        with open(os.path.join("data", "FOOT BALL", "CREDENTIALS_PICKLE_FILE"), 'rb') as f:
             credentials = pickle.load(f)
     else:
         flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
         credentials = flow.run_console()
-        with open("CREDENTIALS_PICKLE_FILE", 'wb') as f:
+        with open(os.path.join("data", "FOOT BALL", "CREDENTIALS_PICKLE_FILE"), 'wb') as f:
             pickle.dump(credentials, f)
     return googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
