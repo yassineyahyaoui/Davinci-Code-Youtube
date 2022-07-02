@@ -24,10 +24,10 @@ def get_videos():
     content = file_videos.read()
     file_videos.close()
 
-    if ("Channel title" or "Video id" or "Video title") not in content:
+    if ("Channel name" or "Video id" or "Video title") not in content:
         file_videos = open(os.path.join("data", "FOOT BALL", "videos.csv"), "w", newline="")
 
-        row = ("Channel title", "Video id", "Video title")
+        row = ("Channel name", "Video id", "Video title")
         csv.writer(file_videos).writerow(row)
         file_videos.close()
 
