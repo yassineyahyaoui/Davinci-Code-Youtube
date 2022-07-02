@@ -1,10 +1,21 @@
 from functions.get_videos import get_videos
 from functions.get_subscriptions import get_subscriptions
 
+import csv
+import os
+
 
 def main():
-    get_subscriptions("FOOT BALL")
-    get_videos("FOOT BALL", "UCJvgF5uUL22U7i9tNlPvduA")
+    channels = []
+    file = open(os.path.join("data", "my_channels.csv"), "r", newline="")
+    content = csv.DictReader(file)
+    for row in content:
+        channels.append(row)
+    file.close()
+
+    for channel in channels:
+        if not os.path.exists(os.path.join("data", channel["Channel name"])):
+            os.mkdir(os.path.join("data", channel["Channel name"]))
 
 
 if __name__ == "__main__":
