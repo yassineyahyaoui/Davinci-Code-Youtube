@@ -22,22 +22,22 @@ def get_subscriptions():
     )
     response = request.execute()
 
-    file_channels = open(os.path.join("data", "channels.csv"), "r", newline="")
+    file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "r", newline="")
     content = file_channels.read()
     file_channels.close()
 
     if ("Channel name" or "Channel id") not in content:
-        file_channels = open(os.path.join("data", "channels.csv"), "w", newline="")
+        file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "w", newline="")
         row = ("Channel name", "Channel id")
         csv.writer(file_channels).writerow(row)
         file_channels.close()
 
     for channel in response["items"]:
-        file_channels = open(os.path.join("data", "channels.csv"), "r", newline="")
+        file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "r", newline="")
         content = file_channels.read()
 
         if channel["snippet"]["resourceId"]["channelId"] not in content:
-            file_channels = open(os.path.join("data", "channels.csv"), "a", newline="")
+            file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "a", newline="")
 
             channel_name = channel["snippet"]["title"].encode("utf-8")
             channel_id = channel["snippet"]["resourceId"]["channelId"]

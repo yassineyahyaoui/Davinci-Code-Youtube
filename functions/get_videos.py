@@ -20,12 +20,12 @@ def get_videos():
     )
     response = request.execute()
 
-    file_videos = open(os.path.join("data", "videos.csv"), "r", newline="")
+    file_videos = open(os.path.join("data", "FOOT BALL", "videos.csv"), "r", newline="")
     content = file_videos.read()
     file_videos.close()
 
     if ("Channel title" or "Video id" or "Video title") not in content:
-        file_videos = open(os.path.join("data", "videos.csv"), "w", newline="")
+        file_videos = open(os.path.join("data", "FOOT BALL", "videos.csv"), "w", newline="")
 
         row = ("Channel title", "Video id", "Video title")
         csv.writer(file_videos).writerow(row)
@@ -33,12 +33,12 @@ def get_videos():
 
     for video in response["items"]:
         if "videoId" in video["id"]:
-            file_videos = open(os.path.join("data", "videos.csv"), "r", newline="")
+            file_videos = open(os.path.join("data", "FOOT BALL", "videos.csv"), "r", newline="")
             content = file_videos.read()
             file_videos.close()
 
             if video["id"]["videoId"] not in content:
-                file_videos = open(os.path.join("data", "videos.csv"), "a", newline="")
+                file_videos = open(os.path.join("data", "FOOT BALL", "videos.csv"), "a", newline="")
 
                 channel_title = video["snippet"]["channelTitle"]
                 video_id = video["id"]["videoId"]
