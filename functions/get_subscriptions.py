@@ -7,7 +7,6 @@ import googleapiclient.errors
 
 
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
-client_secrets_file = "client_secret.json"
 api_service_name = "youtube"
 api_version = "v3"
 developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
@@ -48,6 +47,11 @@ def get_subscriptions():
 
 
 def get_authenticated_service():
+    secret_file = open(os.path.join("data", "FOOT BALL", "client_secret.json"), "r", newline="")
+    client_secrets_file = secret_file.read()
+    secret_file.close()
+    print(client_secrets_file)
+
     if os.path.exists("CREDENTIALS_PICKLE_FILE"):
         with open("CREDENTIALS_PICKLE_FILE", 'rb') as f:
             credentials = pickle.load(f)
