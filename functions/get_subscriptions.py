@@ -10,6 +10,7 @@ scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 api_service_name = "youtube"
 api_version = "v3"
 developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
+client_secrets_file = "client_secret.json"
 
 
 def get_subscriptions(targeted_channel):
@@ -47,10 +48,6 @@ def get_subscriptions(targeted_channel):
 
 
 def get_authenticated_service(targeted_channel):
-    secret_file = open(os.path.join("data", targeted_channel, "client_secret.json"), "r", newline="")
-    client_secrets_file = secret_file.read()
-    secret_file.close()
-
     if os.path.exists(os.path.join("data", targeted_channel, "CREDENTIALS_PICKLE_FILE")):
         with open(os.path.join("data", targeted_channel, "CREDENTIALS_PICKLE_FILE"), 'rb') as f:
             credentials = pickle.load(f)

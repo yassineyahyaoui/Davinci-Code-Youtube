@@ -17,6 +17,8 @@ def main():
         if not os.path.exists(os.path.join("data", channel["Channel name"])):
             os.mkdir(os.path.join("data", channel["Channel name"]))
 
+    get_subscriptions("FOOT BALL")
+
 
 if __name__ == "__main__":
     main()
