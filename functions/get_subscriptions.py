@@ -22,6 +22,10 @@ def get_subscriptions(targeted_channel):
     )
     response = request.execute()
 
+    if not os.path.exists(os.path.join("data", targeted_channel, "channels.csv")):
+        file = open(os.path.join("data", targeted_channel, "channels.csv"), "w", newline="")
+        file.close()
+
     file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "r", newline="")
     content = file_channels.read()
     file_channels.close()

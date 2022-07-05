@@ -17,6 +17,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\data\NARUTO OFFICIEL\channels.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\NARUTO OFFICIEL\my_channels.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\data\SINBAD - LOL\channels.csv">
           <value>
             <Attribute>
