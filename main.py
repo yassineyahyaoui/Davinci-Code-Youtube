@@ -19,7 +19,6 @@ def main():
             os.mkdir(os.path.join("data", channel["Channel name"]))
         get_subscriptions(channel["Channel name"])
 
-    for channel in channels:
         file_videos = open(os.path.join("data", channel["Channel name"], "channels.csv"), "r", newline="")
         content = csv.DictReader(file_videos)
         for row in content:
