@@ -28,10 +28,10 @@ def get_videos(targeted_channel, video_id):
     content = file_videos.read()
     file_videos.close()
 
-    if ("Channel name" or "Video id" or "Video title") not in content:
+    if ("Channel name" or "Video id" or "Video title" or "Video publish time") not in content:
         file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "w", newline="")
 
-        row = ("Channel name", "Video id", "Video title")
+        row = ("Channel name", "Video id", "Video title", "Video publish time")
         csv.writer(file_videos).writerow(row)
         file_videos.close()
 
@@ -47,7 +47,8 @@ def get_videos(targeted_channel, video_id):
                 channel_title = video["snippet"]["channelTitle"].encode("utf-8")
                 video_id = video["id"]["videoId"]
                 video_title = video["snippet"]["title"].encode("utf-8")
+                video_publish_time = video["snippet"]["publishTime"]
 
-                row = (channel_title, video_id, video_title)
+                row = (channel_title, video_id, video_title, video_publish_time)
                 csv.writer(file_videos).writerow(row)
                 file_videos.close()
