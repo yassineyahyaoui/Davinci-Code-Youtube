@@ -16,8 +16,8 @@ def main():
     for channel in channels:
         if not os.path.exists(os.path.join("data", channel["Channel name"])):
             os.mkdir(os.path.join("data", channel["Channel name"]))
-
-    get_subscriptions("NARUTO OFFICIEL")
+        get_subscriptions(channel["Channel name"])
+        get_videos(channel["Channel name"], channel["Channel id"])
 
 
 if __name__ == "__main__":

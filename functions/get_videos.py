@@ -20,6 +20,10 @@ def get_videos(targeted_channel, targeted_channel_id):
     )
     response = request.execute()
 
+    if not os.path.exists(os.path.join("data", targeted_channel, "videos.csv")):
+        file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "w", newline="")
+        file_videos.close()
+
     file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "r", newline="")
     content = file_videos.read()
     file_videos.close()
