@@ -1,5 +1,6 @@
 import os
 import csv
+import pandas
 import googleapiclient.discovery
 import googleapiclient.errors
 
@@ -52,3 +53,25 @@ def get_videos(targeted_channel, video_id):
                 row = (channel_title, video_id, video_title, video_publish_time)
                 csv.writer(file_videos).writerow(row)
                 file_videos.close()
+
+    #SORT BY VIDEO PUBLISH TIME
+    data = pandas.read_csv(os.path.join("data", targeted_channel, "videos.csv"))
+    data.sort_values(["Video publish time"], axis=0, ascending=[False], inplace=True)
+    print(data)
+
+    videos_list = []
+    file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "r", newline="")
+    content = csv.DictReader(file_videos)
+    for row in content:
+        videos_list.append(row)
+    file_videos.close()
+
+    file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "w", newline="")
+    row = ("Channel name", "Video id", "Video title", "Video publish time")
+    csv.writer(file_videos).writerow(row)
+    for index, item in data.iterrows():
+        for video in videos_list:
+            if item["Video id"] == video["Video id"]:
+                row = (video["Channel name"], video["Video id"], video["Video title"], video["Video publish time"])
+                csv.writer(file_videos).writerow(row)
+    file_videos.close()
