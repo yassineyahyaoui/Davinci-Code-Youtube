@@ -54,10 +54,13 @@ def get_videos(targeted_channel, video_id):
                 csv.writer(file_videos).writerow(row)
                 file_videos.close()
 
-    #SORT BY VIDEO PUBLISH TIME
+                sort_by_publish_time(targeted_channel)
+
+
+# SORT BY VIDEO PUBLISH TIME
+def sort_by_publish_time(targeted_channel):
     data = pandas.read_csv(os.path.join("data", targeted_channel, "videos.csv"))
     data.sort_values(["Video publish time"], axis=0, ascending=[False], inplace=True)
-    print(data)
 
     videos_list = []
     file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "r", newline="")
