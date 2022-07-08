@@ -10,12 +10,11 @@ api_version = "v3"
 developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
 
 
-def get_videos(targeted_channel, video_id):
+def get_videos(targeted_channel, channel_id):
     youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=developer_key)
-
     request = youtube.search().list(
         part="snippet,id",
-        channelId=video_id,
+        channelId=channel_id,
         order="date",
         maxResults=5
     )
@@ -54,11 +53,50 @@ def get_videos(targeted_channel, video_id):
                 csv.writer(file_videos).writerow(row)
                 file_videos.close()
 
-                sort_by_publish_time(targeted_channel)
+                get_videos_details(targeted_channel)
 
 
-# SORT BY VIDEO PUBLISH TIME
-def sort_by_publish_time(targeted_channel):
+def get_videos_details(targeted_channel):
+    videos_list = []
+    file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "r", newline="")
+    content = csv.DictReader(file_videos)
+    for row in content:
+        videos_list.append(row)
+    file_videos.close()
+
+    file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "w", newline="")
+    row = ("Channel name", "Video id", "Video title", "Video description", "Video view count", "Video like count",
+           "Video comment count", "Video license", "Video duration", "Video publish time")
+    csv.writer(file_videos).writerow(row)
+
+    for video in videos_list:
+        youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=developer_key)
+        request = youtube.videos().list(
+            part="snippet,contentDetails,statistics",
+            id=video["Video id"]
+        )
+        response = request.execute()
+
+        if response["items"]:
+            channel_name = response["items"][0]["snippet"]["channelTitle"].encode("utf-8")
+            video_id = response["items"][0]["id"]
+            video_title = response["items"][0]["snippet"]["title"].encode("utf-8")
+            video_description = response["items"][0]["snippet"]["description"].encode("utf-8")
+            video_view_count = response["items"][0]["statistics"]["viewCount"]
+            video_like_count = response["items"][0]["statistics"]["likeCount"]
+            video_comment_count = response["items"][0]["statistics"]["commentCount"]
+            video_license = response["items"][0]["contentDetails"]["licensedContent"]
+            video_duration = response["items"][0]["contentDetails"]["duration"]
+            video_publish_time = response["items"][0]["snippet"]["publishedAt"]
+
+            row = (channel_name, video_id, video_title, video_description, video_view_count, video_like_count,
+                   video_comment_count, video_license, video_duration, video_publish_time)
+            csv.writer(file_videos).writerow(row)
+
+    file_videos.close()
+
+
+def sort_videos_by_publish_time(targeted_channel):
     data = pandas.read_csv(os.path.join("data", targeted_channel, "videos.csv"))
     data.sort_values(["Video publish time"], axis=0, ascending=[False], inplace=True)
 
