@@ -53,7 +53,8 @@ def get_videos(targeted_channel, channel_id):
                 csv.writer(file_videos).writerow(row)
                 file_videos.close()
 
-                get_videos_details(targeted_channel)
+    get_videos_details(targeted_channel)
+    sort_videos_by_rating(targeted_channel)
 
 
 def get_videos_details(targeted_channel):
@@ -65,8 +66,8 @@ def get_videos_details(targeted_channel):
     file_videos.close()
 
     file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "w", newline="")
-    row = ("Channel name", "Video id", "Video title", "Video description", "Video rating", "Video view count", "Video like count",
-           "Video comment count", "Video license", "Video duration", "Video publish time")
+    row = ("Channel name", "Video id", "Video title", "Video description", "Video rating", "Video view count",
+           "Video like count", "Video comment count", "Video license", "Video duration", "Video publish time")
     csv.writer(file_videos).writerow(row)
 
     for video in videos_list:
@@ -100,9 +101,9 @@ def get_videos_details(targeted_channel):
     file_videos.close()
 
 
-def sort_videos_by_publish_time(targeted_channel):
+def sort_videos_by_rating(targeted_channel):
     data = pandas.read_csv(os.path.join("data", targeted_channel, "videos.csv"))
-    data.sort_values(["Video publish time"], axis=0, ascending=[False], inplace=True)
+    data.sort_values(["Video rating"], axis=0, ascending=[False], inplace=True)
 
     videos_list = []
     file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "r", newline="")
@@ -112,11 +113,12 @@ def sort_videos_by_publish_time(targeted_channel):
     file_videos.close()
 
     file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "w", newline="")
-    row = ("Channel name", "Video id", "Video title", "Video publish time")
+    row = ("Channel name", "Video id", "Video title", "Video description", "Video rating", "Video view count",
+           "Video like count", "Video comment count", "Video license", "Video duration", "Video publish time")
     csv.writer(file_videos).writerow(row)
     for index, item in data.iterrows():
         for video in videos_list:
             if item["Video id"] == video["Video id"]:
-                row = (video["Channel name"], video["Video id"], video["Video title"], video["Video publish time"])
+                row = (video["Channel name"], video["Video id"], video["Video title"], video["Video description"], video["Video rating"], video["Video view count"], video["Video like count"], video["Video comment count"], video["Video license"], video["Video duration"], video["Video publish time"])
                 csv.writer(file_videos).writerow(row)
     file_videos.close()
