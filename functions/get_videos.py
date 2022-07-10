@@ -94,9 +94,10 @@ def get_videos_details(targeted_channel):
             video_duration = response["items"][0]["contentDetails"]["duration"]
             video_publish_time = response["items"][0]["snippet"]["publishedAt"]
 
-            row = (channel_name, video_id, video_title, video_description, video_rating, video_view_count, video_like_count,
-                   video_comment_count, video_license, video_duration, video_publish_time)
-            csv.writer(file_videos).writerow(row)
+            if not video_license:
+                row = (channel_name, video_id, video_title, video_description, video_rating, video_view_count, video_like_count,
+                       video_comment_count, video_license, video_duration, video_publish_time)
+                csv.writer(file_videos).writerow(row)
 
     file_videos.close()
 
