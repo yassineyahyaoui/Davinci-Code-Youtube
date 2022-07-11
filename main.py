@@ -22,7 +22,6 @@ def main():
         file_videos = open(os.path.join("data", channel["Channel name"], "channels.csv"), "r", newline="")
         content = csv.DictReader(file_videos)
         for row in content:
-            print(row)
             channels2.append(row)
             get_videos(channel["Channel name"], row["Channel id"], True)
         file_videos.close()
