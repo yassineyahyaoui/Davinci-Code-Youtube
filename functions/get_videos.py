@@ -86,15 +86,17 @@ def get_videos_details(targeted_channel):
             video_view_count = response["items"][0]["statistics"]["viewCount"]
             video_like_count = response["items"][0]["statistics"]["likeCount"]
             video_comment_count = response["items"][0]["statistics"]["commentCount"]
+
             if video_view_count != 0:
                 video_rating = ((int(video_like_count) + (int(video_comment_count) * 10)) / int(video_view_count)) * 100
             else:
                 video_rating = 0
+
             video_license = response["items"][0]["contentDetails"]["licensedContent"]
             video_duration = response["items"][0]["contentDetails"]["duration"]
             video_publish_time = response["items"][0]["snippet"]["publishedAt"]
 
-            if not video_license:
+            if not video_license and video_duration.find("M") == -1:
                 row = (channel_name, video_id, video_title, video_description, video_rating, video_view_count, video_like_count,
                        video_comment_count, video_license, video_duration, video_publish_time)
                 csv.writer(file_videos).writerow(row)
