@@ -10,13 +10,13 @@ api_version = "v3"
 developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
 
 
-def get_videos(targeted_channel, channel_id):
+def get_videos(targeted_channel, channel_id, shorts):
     youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=developer_key)
     request = youtube.search().list(
         part="snippet,id",
         channelId=channel_id,
         order="date",
-        maxResults=5
+        maxResults=2
     )
     response = request.execute()
 
@@ -53,11 +53,11 @@ def get_videos(targeted_channel, channel_id):
                 csv.writer(file_videos).writerow(row)
                 file_videos.close()
 
-    get_videos_details(targeted_channel)
+    get_videos_details(targeted_channel, shorts)
     sort_videos_by_rating(targeted_channel)
 
 
-def get_videos_details(targeted_channel):
+def get_videos_details(targeted_channel, shorts):
     videos_list = []
     file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "r", newline="")
     content = csv.DictReader(file_videos)
@@ -96,7 +96,7 @@ def get_videos_details(targeted_channel):
             video_duration = response["items"][0]["contentDetails"]["duration"]
             video_publish_time = response["items"][0]["snippet"]["publishedAt"]
 
-            if not video_license and video_duration.find("M") == -1:
+            if not video_license and (video_duration.find("M") == -1 or not shorts):
                 row = (channel_name, video_id, video_title, video_description, video_rating, video_view_count, video_like_count,
                        video_comment_count, video_license, video_duration, video_publish_time)
                 csv.writer(file_videos).writerow(row)

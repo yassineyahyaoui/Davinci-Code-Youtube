@@ -24,7 +24,7 @@ def main():
         for row in content:
             print(row)
             channels2.append(row)
-            get_videos(channel["Channel name"], row["Channel id"])
+            get_videos(channel["Channel name"], row["Channel id"], True)
         file_videos.close()
 
 
