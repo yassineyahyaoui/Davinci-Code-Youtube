@@ -25,10 +25,14 @@ def upload_videos(targeted_channel):
     youtube = get_authenticated_service(targeted_channel)
 
     request = youtube.videos().insert(
-        part="snippet",
+        part="snippet,status",
         body={
             "snippet": {
-                "title": "test video"
+                "title": "test video",
+                "description": "this is a description"
+            },
+            "status": {
+                "publishAt": "2022-08-01 15:00:00.000"
             }
         },
 
