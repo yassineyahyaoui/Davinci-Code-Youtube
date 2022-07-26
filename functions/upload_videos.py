@@ -32,13 +32,13 @@ def upload_videos(targeted_channel):
                 "description": "this is a description"
             },
             "status": {
-                "publishAt": "2022-08-01 15:00:00.000"
+                "publishAt": "2022-07-28T10:31:31Z"
             }
         },
 
         # TODO: For this request to work, you must replace "YOUR_FILE"
         #       with a pointer to the actual file you are uploading.
-        media_body=MediaFileUpload("C:/Users/DELL/PycharmProjects/Davinci-Code-Youtube/data/FOOT BALL/videos/HjK3sYyYu2w/messi.mp4")
+        media_body=MediaFileUpload("C:/Users/DELL/PycharmProjects/Davinci-Code-Youtube/data/FOOT BALL/videos/n7IL55J4Dys/Rarest moments.mp4")
     )
     response = request.execute()
 
