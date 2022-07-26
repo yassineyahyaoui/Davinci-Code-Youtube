@@ -32,6 +32,7 @@ def upload_videos(targeted_channel):
                 "description": "this is a description"
             },
             "status": {
+                "privacyStatus": "private",
                 "publishAt": "2022-07-28T10:31:31Z"
             }
         },
