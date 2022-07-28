@@ -85,8 +85,14 @@ def get_videos_details(targeted_channel, shorts):
             video_description = response["items"][0]["snippet"]["description"].encode("utf-8")
             video_category = response["items"][0]["snippet"]["categoryId"]
             video_view_count = response["items"][0]["statistics"]["viewCount"]
-            video_like_count = response["items"][0]["statistics"]["likeCount"]
-            video_comment_count = response["items"][0]["statistics"]["commentCount"]
+            if "likeCount" in response["items"][0]["statistics"]:
+                video_like_count = response["items"][0]["statistics"]["likeCount"]
+            else:
+                video_like_count = "0"
+            if "commentCount" in response["items"][0]["statistics"]:
+                video_comment_count = response["items"][0]["statistics"]["commentCount"]
+            else:
+                video_comment_count = "0"
 
             if video_view_count != 0:
                 video_rating = ((int(video_like_count) + (int(video_comment_count) * 10)) / int(video_view_count)) * 100
