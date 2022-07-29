@@ -16,7 +16,7 @@ def get_videos(targeted_channel, channel_id, shorts):
         part="snippet,id",
         channelId=channel_id,
         order="date",
-        maxResults=2
+        maxResults=5
     )
     response = request.execute()
 
@@ -98,7 +98,7 @@ def get_videos_details(targeted_channel, shorts):
             else:
                 video_comment_count = "0"
 
-            if video_view_count != 0:
+            if int(video_view_count) != 0:
                 video_rating = ((int(video_like_count) + (int(video_comment_count) * 10)) / int(video_view_count)) * 100
             else:
                 video_rating = 0
