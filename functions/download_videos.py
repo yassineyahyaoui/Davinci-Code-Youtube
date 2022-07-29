@@ -5,7 +5,7 @@ from pytube import YouTube
 
 def download_videos(targeted_channel, video_id):
     yt = YouTube("https://www.youtube.com/" + video_id)
-    yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download("/data/" + targeted_channel + "/videos/" + video_id)
+    yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download(os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id)
 
     check_downloaded_videos_file(targeted_channel)
     update_downloaded_videos_file(targeted_channel, video_id)
