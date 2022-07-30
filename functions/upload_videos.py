@@ -7,12 +7,14 @@
 #    https://developers.google.com/api-client-library/python/guide/media_upload
 
 import os
+import csv
 import pickle
+import struct
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-
 from googleapiclient.http import MediaFileUpload
+
 
 scopes = ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/youtube.upload"]
 api_service_name = "youtube"
@@ -21,29 +23,36 @@ developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
 client_secrets_file = "client_secret.json"
 
 
-def upload_videos(targeted_channel):
+def upload_videos(targeted_channel, video_id):
     youtube = get_authenticated_service(targeted_channel)
 
-    request = youtube.videos().insert(
-        part="snippet,status",
-        body={
-            "snippet": {
-                "title": "test video",
-                "description": "this is a description"
-            },
-            "status": {
-                "privacyStatus": "private",
-                "publishAt": "2022-07-28T10:31:31Z"
-            }
-        },
+    videos = []
+    file_downloaded_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "r", newline="")
+    content = csv.DictReader(file_downloaded_videos)
+    for video in content:
+        videos.append(video)
+    file_downloaded_videos.close()
 
-        # TODO: For this request to work, you must replace "YOUR_FILE"
-        #       with a pointer to the actual file you are uploading.
-        media_body=MediaFileUpload("C:/Users/DELL/PycharmProjects/Davinci-Code-Youtube/data/FOOT BALL/videos/n7IL55J4Dys/Rarest moments.mp4")
-    )
-    response = request.execute()
+    for video in videos:
+        if video["Video id"] == video_id:
 
-    print(response)
+            request = youtube.videos().insert(
+                part="snippet,status",
+                body={
+                    "snippet": {
+                        "title": convert_to_bytes(video["Video title"]).decode(),
+                        "description": convert_to_bytes(video["Video description"]).decode()
+                    },
+                    "status": {
+                        "privacyStatus": "private",
+                        "publishAt": "2022-08-01T10:31:31Z"
+                    }
+                },
+
+                media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/" + convert_to_bytes(video["Video title"]).decode() + ".mp4")
+            )
+            response = request.execute()
+            print(response)
 
 
 def get_authenticated_service(targeted_channel):
@@ -57,3 +66,19 @@ def get_authenticated_service(targeted_channel):
             pickle.dump(credentials, f)
     return googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
+
+
+def convert_to_bytes(string):
+    s = string[2:-1]
+    outlist = []
+    for cp in s:
+        num = ord(cp)
+        if num < 255:
+            outlist.append(struct.pack('B', num))
+        elif num < 65535:
+            outlist.append(struct.pack('>H', num))
+        else:
+            b = (num & 0xFF0000) >> 16
+            H = num & 0xFFFF
+            outlist.append(struct.pack('>bH', b, H))
+    return b''.join(outlist)
