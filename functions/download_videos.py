@@ -1,11 +1,12 @@
 import os
 import csv
+import struct
 from pytube import YouTube
 
 
 def download_videos(targeted_channel, video_id):
     yt = YouTube("https://www.youtube.com/" + video_id)
-    yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download(os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id)
+    yt.streams.filter(progressive=True, file_extension='mp4').get_highest_resolution().download(os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id)
 
     check_downloaded_videos_file(targeted_channel)
     update_downloaded_videos_file(targeted_channel, video_id)
@@ -68,3 +69,19 @@ def update_videos_file(targeted_channel, video_id):
             row = (video["Channel name"], video["Video id"], video["Video title"], video["Video description"], video["Video rating"], video["Video view count"], video["Video like count"], video["Video comment count"], video["Video license"], video["Video duration"], video["Video publish time"])
             csv.writer(file_videos).writerow(row)
             file_videos.close()
+
+
+def convert_to_bytes(string):
+    s = string[2:-1]
+    outlist = []
+    for cp in s:
+        num = ord(cp)
+        if num < 255:
+            outlist.append(struct.pack('B', num))
+        elif num < 65535:
+            outlist.append(struct.pack('>H', num))
+        else:
+            b = (num & 0xFF0000) >> 16
+            H = num & 0xFFFF
+            outlist.append(struct.pack('>bH', b, H))
+    return b''.join(outlist)
