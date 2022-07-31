@@ -12,6 +12,9 @@ def download_videos(targeted_channel, video_id):
     update_downloaded_videos_file(targeted_channel, video_id)
     update_videos_file(targeted_channel, video_id)
 
+    video_title = yt.streams.get_highest_resolution().title
+    os.rename(os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id + "/" + yt.streams.get_highest_resolution().default_filename, os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id + "/" + video_title + ".mp4")
+
 
 def check_downloaded_videos_file(targeted_channel):
     if not os.path.exists(os.path.join("data", targeted_channel, "downloaded_videos.csv")):
