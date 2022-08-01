@@ -1,11 +1,9 @@
 import os
-import csv
 import pickle
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 from googleapiclient.http import MediaFileUpload
-from pytube import YouTube
 from datetime import date, timedelta
 
 
@@ -19,37 +17,39 @@ client_secrets_file = "client_secret.json"
 def upload_videos(targeted_channel, video_id):
     youtube = get_authenticated_service(targeted_channel)
 
-    videos = []
-    file_downloaded_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "r", newline="")
-    content = csv.DictReader(file_downloaded_videos)
-    for video in content:
-        videos.append(video)
-    file_downloaded_videos.close()
+    request = youtube.videos().list(
+        part="snippet,contentDetails,statistics",
+        id=video_id
+    )
+    response = request.execute()
 
-    for video in videos:
-        if video["Video id"] == video_id:
-            yt = YouTube("https://www.youtube.com/" + video_id)
-            video_title = yt.streams.get_highest_resolution().title
+    video_title = response["items"][0]["snippet"]["title"]
+    video_description = response["items"][0]["snippet"]["description"]
+    video_category = response["items"][0]["snippet"]["categoryId"]
+    video_publish_time = response["items"][0]["snippet"]["publishedAt"]
+    video_tags = []
+    if "tags" in response["items"][0]["snippet"]:
+        video_tags = response["items"][0]["snippet"]["tags"]
 
-            request = youtube.videos().insert(
-                part="snippet,status",
-                body={
-                    "snippet": {
-                        "title": video_title,
-                        "description": video_title,
-                        "categoryId": video["Video category"]
-                    },
-                    "status": {
-                        "privacyStatus": "private",
-                        "publishAt": date.today() + timedelta(days=1) + video["Video publish time"][10:]
-                    }
-                },
+    request = youtube.videos().insert(
+        part="snippet,status",
+        body={
+            "snippet": {
+                "title": video_title,
+                "description": video_description,
+                "categoryId": video_category,
+                "tags": video_tags
+            },
+            "status": {
+                "privacyStatus": "private",
+                "publishAt": (date.today() + timedelta(days=1)).strftime("%Y-%m-%d") + video_publish_time[10:]
+            }
+        },
 
-                media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/" + video_title + ".mp4")
-            )
-            response = request.execute()
-            print(response)
-            print(video_title)
+        media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/" + video_title + ".mp4")
+    )
+    response = request.execute()
+    print(response)
 
 
 def get_authenticated_service(targeted_channel):
