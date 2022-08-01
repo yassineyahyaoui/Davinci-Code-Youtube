@@ -1,19 +1,12 @@
-#    To test this code, you must run it locally using your own API credentials.
-#    See: https://developers.google.com/explorer-help/code-samples#python
-# 2. This example makes a simple upload request. We recommend that you consider
-#    using resumable uploads instead, particularly if you are transferring large
-#    files or there's a high likelihood of a network interruption or other
-#    transmission failure. To learn more about resumable uploads, see:
-#    https://developers.google.com/api-client-library/python/guide/media_upload
-
 import os
 import csv
 import pickle
-import struct
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 from googleapiclient.http import MediaFileUpload
+from pytube import YouTube
+from datetime import date, timedelta
 
 
 scopes = ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/youtube.upload"]
@@ -35,24 +28,28 @@ def upload_videos(targeted_channel, video_id):
 
     for video in videos:
         if video["Video id"] == video_id:
+            yt = YouTube("https://www.youtube.com/" + video_id)
+            video_title = yt.streams.get_highest_resolution().title
 
             request = youtube.videos().insert(
                 part="snippet,status",
                 body={
                     "snippet": {
-                        "title": convert_to_bytes(video["Video title"]).decode(),
-                        "description": convert_to_bytes(video["Video description"]).decode()
+                        "title": video_title,
+                        "description": video_title,
+                        "categoryId": video["Video category"]
                     },
                     "status": {
                         "privacyStatus": "private",
-                        "publishAt": "2022-08-01T10:31:31Z"
+                        "publishAt": date.today() + timedelta(days=1) + video["Video publish time"][10:]
                     }
                 },
 
-                media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/" + convert_to_bytes(video["Video title"]).decode() + ".mp4")
+                media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/" + video_title + ".mp4")
             )
             response = request.execute()
             print(response)
+            print(video_title)
 
 
 def get_authenticated_service(targeted_channel):
@@ -66,19 +63,3 @@ def get_authenticated_service(targeted_channel):
             pickle.dump(credentials, f)
     return googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
-
-
-def convert_to_bytes(string):
-    s = string[2:-1]
-    outlist = []
-    for cp in s:
-        num = ord(cp)
-        if num < 255:
-            outlist.append(struct.pack('B', num))
-        elif num < 65535:
-            outlist.append(struct.pack('>H', num))
-        else:
-            b = (num & 0xFF0000) >> 16
-            H = num & 0xFFFF
-            outlist.append(struct.pack('>bH', b, H))
-    return b''.join(outlist)
