@@ -46,7 +46,7 @@ def upload_videos(targeted_channel, video_id):
             }
         },
 
-        media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/" + video_title + ".mp4")
+        media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/video.mp4")
     )
     response = request.execute()
     print(response)
