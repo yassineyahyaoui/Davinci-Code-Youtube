@@ -70,7 +70,7 @@ def get_videos_details(targeted_channel, shorts):
     file_videos.close()
 
     file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "w", newline="")
-    row = ("Channel name", "Video id", "Video title", "Video description", "Video category", "Video rating", "Video view count",
+    row = ("Channel name", "Video id", "Video title", "Video description", "Video thumbnail", "Video category", "Video rating", "Video view count",
            "Video like count", "Video comment count", "Video license", "Video duration", "Video publish time")
     csv.writer(file_videos).writerow(row)
 
@@ -87,6 +87,7 @@ def get_videos_details(targeted_channel, shorts):
             video_id = response["items"][0]["id"]
             video_title = response["items"][0]["snippet"]["title"].encode("utf-8")
             video_description = response["items"][0]["snippet"]["description"].encode("utf-8")
+            video_thumbnail = response["items"][0]["snippet"]["thumbnails"]["high"]["url"]
             video_category = response["items"][0]["snippet"]["categoryId"]
             video_view_count = response["items"][0]["statistics"]["viewCount"]
             if "likeCount" in response["items"][0]["statistics"]:
@@ -108,7 +109,7 @@ def get_videos_details(targeted_channel, shorts):
             video_publish_time = response["items"][0]["snippet"]["publishedAt"]
 
             if not video_license and (video_duration.find("M") == -1 or not shorts):
-                row = (channel_name, video_id, video_title, video_description, video_category, video_rating, video_view_count, video_like_count,
+                row = (channel_name, video_id, video_title, video_description, video_thumbnail, video_category, video_rating, video_view_count, video_like_count,
                        video_comment_count, video_license, video_duration, video_publish_time)
                 csv.writer(file_videos).writerow(row)
 
@@ -127,12 +128,12 @@ def sort_videos_by_rating(targeted_channel):
     file_videos.close()
 
     file_videos = open(os.path.join("data", targeted_channel, "videos.csv"), "w", newline="")
-    row = ("Channel name", "Video id", "Video title", "Video description", "Video category", "Video rating", "Video view count",
+    row = ("Channel name", "Video id", "Video title", "Video description", "Video thumbnail", "Video category", "Video rating", "Video view count",
            "Video like count", "Video comment count", "Video license", "Video duration", "Video publish time")
     csv.writer(file_videos).writerow(row)
     for index, item in data.iterrows():
         for video in videos_list:
             if item["Video id"] == video["Video id"]:
-                row = (video["Channel name"], video["Video id"], video["Video title"], video["Video description"], video["Video category"], video["Video rating"], video["Video view count"], video["Video like count"], video["Video comment count"], video["Video license"], video["Video duration"], video["Video publish time"])
+                row = (video["Channel name"], video["Video id"], video["Video title"], video["Video description"], video["Video thumbnail"], video["Video category"], video["Video rating"], video["Video view count"], video["Video like count"], video["Video comment count"], video["Video license"], video["Video duration"], video["Video publish time"])
                 csv.writer(file_videos).writerow(row)
     file_videos.close()
