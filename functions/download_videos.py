@@ -6,16 +6,13 @@ from pytube import YouTube
 
 def download_videos(targeted_channel, video_id):
     yt = YouTube("https://www.youtube.com/" + video_id)
-    yt.streams.filter(progressive=True, file_extension='mp4').get_highest_resolution().download(os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id)
+    yt.streams.filter(progressive=True, file_extension='mp4').get_highest_resolution().download(os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id, filename="video" + ".mp4")
 
     check_downloaded_videos_file(targeted_channel)
     update_downloaded_videos_file(targeted_channel, video_id)
     update_videos_file(targeted_channel, video_id)
 
-    video_title = yt.streams.get_highest_resolution().title
-    os.rename(os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id + "/" + yt.streams.get_highest_resolution().default_filename, os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id + "/" + video_title + ".mp4")
-
-    urllib.request.urlretrieve("https://i.ytimg.com/vi/yPkmtgZ_EEY/hqdefault.jpg", os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id + "/" + video_title + ".jpg")
+    urllib.request.urlretrieve("https://i.ytimg.com/vi/" + video_id + "/hqdefault.jpg", os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id + "/thumbnail.jpg")
 
 
 def check_downloaded_videos_file(targeted_channel):
