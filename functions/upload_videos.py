@@ -7,7 +7,7 @@ from googleapiclient.http import MediaFileUpload
 from datetime import date, timedelta
 
 
-scopes = ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/youtube.upload"]
+scopes = ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube.force-ssl"]
 api_service_name = "youtube"
 api_version = "v3"
 developer_key = "AIzaSyCQ7pxDuHY2_bymJf0ZbqUFXIFQ36TLYdo"
@@ -47,6 +47,19 @@ def upload_videos(targeted_channel, video_id):
         },
 
         media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/video.mp4")
+    )
+    response = request.execute()
+    print(response)
+
+    set_thumbnail(targeted_channel, video_id)
+
+
+def set_thumbnail(targeted_channel, video_id):
+    youtube = get_authenticated_service(targeted_channel)
+
+    request = youtube.thumbnails().set(
+        videoId=video_id,
+        media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/thumbnail.jpg")
     )
     response = request.execute()
     print(response)
