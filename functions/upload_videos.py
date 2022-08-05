@@ -51,15 +51,15 @@ def upload_videos(targeted_channel, video_id):
     response = request.execute()
     print(response)
 
-    set_thumbnail(targeted_channel, video_id)
+    set_thumbnail(targeted_channel, "targeted_video_id", video_id)
 
 
-def set_thumbnail(targeted_channel, video_id):
+def set_thumbnail(targeted_channel, targeted_video_id, video_id):
     youtube = get_authenticated_service(targeted_channel)
 
     request = youtube.thumbnails().set(
-        videoId=video_id,
-        media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/thumbnail.jpg")
+        videoId=targeted_video_id,
+        media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/thumbnail.png")
     )
     response = request.execute()
     print(response)
