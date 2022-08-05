@@ -50,9 +50,12 @@ def upload_videos(targeted_channel, video_id):
         media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/video.mp4")
     )
     response = request.execute()
-    print(response)
 
     set_thumbnail(targeted_channel, response["id"], video_id)
+
+    check_uploaded_videos_file(targeted_channel)
+    update_uploaded_videos_file(targeted_channel, video_id)
+    update_downloaded_videos_file(targeted_channel, video_id)
 
 
 def set_thumbnail(targeted_channel, targeted_video_id, video_id):
@@ -120,7 +123,7 @@ def update_downloaded_videos_file(targeted_channel, video_id):
             file_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "a", newline="")
             row = (video["Channel name"], video["Video id"], video["Video title"], video["Video description"], video["Video thumbnail"], video["Video category"], video["Video rating"], video["Video view count"], video["Video like count"], video["Video comment count"], video["Video license"], video["Video duration"], video["Video publish time"])
             csv.writer(file_videos).writerow(row)
-    file_downloaded_videos.close()
+            file_downloaded_videos.close()
 
 
 def get_authenticated_service(targeted_channel):
