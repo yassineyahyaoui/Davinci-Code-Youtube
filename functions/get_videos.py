@@ -46,7 +46,7 @@ def get_videos(targeted_channel, channel_id, shorts):
             file_downloaded_videos.close()
 
             file_uploaded_videos = open(os.path.join("data", targeted_channel, "uploaded_videos.csv"), "r", newline="")
-            content_downloaded_videos = file_uploaded_videos.read()
+            content_uploaded_videos = file_uploaded_videos.read()
             file_uploaded_videos.close()
 
             if (video["id"]["videoId"] not in content) and (video["id"]["videoId"] not in content_downloaded_videos):
