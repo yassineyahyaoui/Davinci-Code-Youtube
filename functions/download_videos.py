@@ -80,19 +80,19 @@ def sort_downloaded_videos_by_rating(targeted_channel):
     data.sort_values(["Video rating"], axis=0, ascending=[False], inplace=True)
 
     downloaded_videos_list = []
-    file_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "r", newline="")
-    content = csv.DictReader(file_videos)
+    file_downloaded_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "r", newline="")
+    content = csv.DictReader(file_downloaded_videos)
     for row in content:
         downloaded_videos_list.append(row)
-    file_videos.close()
+    file_downloaded_videos.close()
 
-    file_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "w", newline="")
+    file_downloaded_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "w", newline="")
     row = ("Channel name", "Video id", "Video title", "Video description", "Video thumbnail", "Video category", "Video rating", "Video view count",
            "Video like count", "Video comment count", "Video license", "Video duration", "Video publish time")
-    csv.writer(file_videos).writerow(row)
+    csv.writer(file_downloaded_videos).writerow(row)
     for index, item in data.iterrows():
         for video in downloaded_videos_list:
             if item["Video id"] == video["Video id"]:
                 row = (video["Channel name"], video["Video id"], video["Video title"], video["Video description"], video["Video thumbnail"], video["Video category"], video["Video rating"], video["Video view count"], video["Video like count"], video["Video comment count"], video["Video license"], video["Video duration"], video["Video publish time"])
-                csv.writer(file_videos).writerow(row)
-    file_videos.close()
+                csv.writer(file_downloaded_videos).writerow(row)
+    file_downloaded_videos.close()
