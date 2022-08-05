@@ -83,14 +83,14 @@ def check_uploaded_videos_file(targeted_channel):
 
 
 def update_uploaded_videos_file(targeted_channel, video_id):
-    videos_list = []
+    downloaded_videos_list = []
     file_downloaded_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "r", newline="")
     content = csv.DictReader(file_downloaded_videos)
     for video in content:
-        videos_list.append(video)
+        downloaded_videos_list.append(video)
     file_downloaded_videos.close()
 
-    for video in videos_list:
+    for video in downloaded_videos_list:
         if video["Video id"] == video_id:
             file_uploaded_videos = open(os.path.join("data", targeted_channel, "uploaded_videos.csv"), "a", newline="")
             row = (video["Channel name"], video["Video id"], video["Video title"], video["Video description"], video["Video thumbnail"], video["Video category"],
