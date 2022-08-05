@@ -1,10 +1,11 @@
 import os
+import csv
 import pickle
+from datetime import date, timedelta
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 from googleapiclient.http import MediaFileUpload
-from datetime import date, timedelta
 
 
 scopes = ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/youtube.upload", "https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -63,6 +64,28 @@ def set_thumbnail(targeted_channel, targeted_video_id, video_id):
     )
     response = request.execute()
     print(response)
+
+
+def update_downloaded_videos_file(targeted_channel, video_id):
+    videos_list = []
+    file_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "r", newline="")
+    content = csv.DictReader(file_videos)
+    for video in content:
+        videos_list.append(video)
+    file_videos.close()
+
+    file_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "w", newline="")
+    row = ("Channel name", "Video id", "Video title", "Video description", "Video thumbnail", "Video category", "Video rating", "Video view count",
+           "Video like count", "Video comment count", "Video license", "Video duration", "Video publish time")
+    csv.writer(file_videos).writerow(row)
+    file_videos.close()
+
+    for video in videos_list:
+        if video["Video id"] != video_id:
+            file_videos = open(os.path.join("data", targeted_channel, "downloaded_videos.csv"), "a", newline="")
+            row = (video["Channel name"], video["Video id"], video["Video title"], video["Video description"], video["Video thumbnail"], video["Video category"], video["Video rating"], video["Video view count"], video["Video like count"], video["Video comment count"], video["Video license"], video["Video duration"], video["Video publish time"])
+            csv.writer(file_videos).writerow(row)
+    file_videos.close()
 
 
 def get_authenticated_service(targeted_channel):
