@@ -51,7 +51,7 @@ def upload_videos(targeted_channel, video_id):
     response = request.execute()
     print(response)
 
-    set_thumbnail(targeted_channel, "targeted_video_id", video_id)
+    set_thumbnail(targeted_channel, response["id"], video_id)
 
 
 def set_thumbnail(targeted_channel, targeted_video_id, video_id):
