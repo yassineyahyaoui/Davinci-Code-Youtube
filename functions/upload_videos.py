@@ -56,6 +56,7 @@ def upload_videos(targeted_channel, video_id):
 
     check_uploaded_videos_file(targeted_channel)
     update_uploaded_videos_file(targeted_channel, video_id)
+    sort_uploaded_videos_by_rating(targeted_channel)
     update_downloaded_videos_file(targeted_channel, video_id)
 
 
