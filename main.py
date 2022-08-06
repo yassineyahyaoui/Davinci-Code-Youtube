@@ -9,6 +9,7 @@ import requests
 
 def main():
     get_subscriptions("FOOT BALL")
+
     file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "r", newline="")
     content = csv.DictReader(file_channels)
     for row in content:
@@ -25,6 +26,15 @@ def main():
                 download_videos("FOOT BALL", row["Video id"])
             i = i + 1
     file_videos.close()
+
+    file_downloaded_videos = open(os.path.join("data", "FOOT BALL", "downloaded_videos.csv"), "r", newline="")
+    content_downloaded_videos = csv.DictReader(file_downloaded_videos)
+    i = 0
+    for row in content_downloaded_videos:
+        if i < 2:
+            upload_videos("FOOT BALL", row["Video id"])
+        i = i + 1
+    file_downloaded_videos.close()
 
 
 if __name__ == "__main__":
