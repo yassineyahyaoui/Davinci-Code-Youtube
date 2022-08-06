@@ -14,7 +14,7 @@ def download_videos(targeted_channel, video_id):
     sort_downloaded_videos_by_rating(targeted_channel)
     update_videos_file(targeted_channel, video_id)
 
-    urllib.request.urlretrieve("https://i.ytimg.com/vi/" + video_id + "/hqdefault.jpg", os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id + "/thumbnail.jpg")
+    urllib.request.urlretrieve("https://i.ytimg.com/vi/" + video_id + "/hqdefault.jpg", os.getcwd() + "/data/" + targeted_channel + "/videos/" + video_id + "/thumbnail.png")
 
 
 def check_downloaded_videos_file(targeted_channel):
