@@ -16,7 +16,7 @@ def get_videos(targeted_channel, channel_id, shorts):
         part="snippet,id",
         channelId=channel_id,
         order="date",
-        maxResults=5
+        maxResults=2
     )
     response = request.execute()
 
