@@ -52,9 +52,13 @@ def main():
         for row in content_downloaded_videos:
             if i < 1:
                 add_cracked_videos("FOOT BALL", row["Video id"])
+                print(row["Video id"] + "The write operation timed out")
             i = i + 1
         file_downloaded_videos.close()
-        print("The write operation timed out")
+
+
+    # download_videos("FOOT BALL", "")
+    # upload_videos("FOOT BALL", "")
 
 
 if __name__ == "__main__":
