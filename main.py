@@ -10,7 +10,11 @@ import requests
 
 def main():
     # GET SUBSCRIPTIONS
-    get_subscriptions("FOOT BALL")
+    try:
+        get_subscriptions("FOOT BALL")
+    except:
+        os.remove(os.path.join("data", "FOOT BALL", "CREDENTIALS_PICKLE_FILE"))
+        print("Token expired, try again!")
 
     # GET VIDEOS
     file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "r", newline="")
