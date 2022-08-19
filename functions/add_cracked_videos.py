@@ -5,6 +5,7 @@ import csv
 def add_cracked_videos(targeted_channel, video_id):
     update_cracked_videos_file(targeted_channel, video_id)
     update_downloaded_videos_file(targeted_channel, video_id)
+    os.remove(os.path.join("data", targeted_channel, "videos", video_id))
 
 
 def update_cracked_videos_file(targeted_channel, video_id):
