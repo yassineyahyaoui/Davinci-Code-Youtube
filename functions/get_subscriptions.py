@@ -26,15 +26,10 @@ def get_subscriptions(targeted_channel):
         file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "w", newline="")
         file_channels.close()
 
-    file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "r", newline="")
-    content = file_channels.read()
+    file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "w", newline="")
+    row = ("Channel name", "Channel id")
+    csv.writer(file_channels).writerow(row)
     file_channels.close()
-
-    if ("Channel name" or "Channel id") not in content:
-        file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "w", newline="")
-        row = ("Channel name", "Channel id")
-        csv.writer(file_channels).writerow(row)
-        file_channels.close()
 
     for channel in response["items"]:
         file_channels = open(os.path.join("data", targeted_channel, "channels.csv"), "r", newline="")
