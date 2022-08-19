@@ -6,6 +6,7 @@ from functions.add_cracked_videos import add_cracked_videos
 import os
 import csv
 import requests
+import sys
 
 
 def main():
@@ -15,6 +16,7 @@ def main():
     except:
         os.remove(os.path.join("data", "FOOT BALL", "CREDENTIALS_PICKLE_FILE"))
         print("Token expired, try again!")
+        sys.exit()
 
     # GET VIDEOS
     file_channels = open(os.path.join("data", "FOOT BALL", "channels.csv"), "r", newline="")
