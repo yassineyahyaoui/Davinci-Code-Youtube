@@ -48,7 +48,7 @@ def upload_videos(targeted_channel, video_id):
             }
         },
 
-        media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/video.mp4")
+        media_body=MediaFileUpload(os.getcwd() + "/data/scores goal/videos/" + video_id + "/video.mp4")
     )
     response = request.execute()
 
@@ -65,7 +65,7 @@ def set_thumbnail(targeted_channel, targeted_video_id, video_id):
 
     request = youtube.thumbnails().set(
         videoId=targeted_video_id,
-        media_body=MediaFileUpload(os.getcwd() + "/data/FOOT BALL/videos/" + video_id + "/thumbnail.png")
+        media_body=MediaFileUpload(os.getcwd() + "/data/scores goal/videos/" + video_id + "/thumbnail.png")
     )
     response = request.execute()
     print(response)

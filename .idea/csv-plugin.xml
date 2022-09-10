@@ -3,35 +3,35 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\data\FOOT BALL\channels.csv">
+        <entry key="\data\scores goal\channels.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\data\FOOT BALL\cracked_videos.csv">
+        <entry key="\data\scores goal\cracked_videos.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\data\FOOT BALL\downloaded_videos.csv">
+        <entry key="\data\scores goal\downloaded_videos.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\data\FOOT BALL\uploaded_videos.csv">
+        <entry key="\data\scores goal\uploaded_videos.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="\data\FOOT BALL\videos.csv">
+        <entry key="\data\scores goal\videos.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
